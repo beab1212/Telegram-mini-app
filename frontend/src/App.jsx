@@ -1,35 +1,35 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useEffect } from "react";
+import WebApp from "@twa-dev/sdk";
 
 function App() {
-  const [count, setCount] = useState(0)
+    const isDarkMode = WebApp.colorScheme === "dark";
 
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    const appStyle = {
+        backgroundColor: isDarkMode ? "#222" : "#fff",
+        color: isDarkMode ? "#fff" : "#000",
+        padding: "20px",
+        textAlign: "center",
+    };
+
+    useEffect(() => {
+        WebApp.ready(); // Ensures the app is fully loaded
+        WebApp.expand(); // Expands the app to full screen
+
+        return () => {
+            // WebApp.shrink(); // Shrinks the app to a smaller size
+            // WebApp.close({ message: "Goodbye!" }); // Closes the app with a message
+        };
+    }, []);
+
+    return (
+        <div>
+            <h1>Telegram Mini App</h1>
+            <p>Color scheme: {isDarkMode ? "Dark" : "Light"}</p>
+            <p>
+                Welcome, {WebApp.initDataUnsafe?.user?.first_name || "Guest"}!
+            </p>
+        </div>
+    );
 }
 
-export default App
+export default App;
